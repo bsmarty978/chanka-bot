@@ -35,16 +35,26 @@ class NewMessageObserver:
             if message.content.startswith(prefix):
                 if message.content == f"{prefix}quote":
                     RM.replyQuote(message)
+
                 elif message.content == f"{prefix}help":
-                    print("help start")
                     RM.replyHelp(message)
-                    print("help end")
+
                 elif message.content == f"{prefix}noods":
-                    print("help start")
                     RM.replyNoods(message)
-                    print("help end")
+
                 elif message.content == f"{prefix}menu":
                     RM.replyMenu(message)
+
+                elif message.content == f"{prefix}namo":
+                    RM.replyNamo(message, driver=driver)
+
+                elif f"{prefix}namo " in message.content:
+                    count = int(message.content.split(" ")[1])
+                    RM.replyNamo(message, driver=driver, count=count)
+
+                elif message.content == f"{prefix}ping":
+                    RM.replyPing(message)
+
                 else:
                     RM.replyModError(message)
             else:

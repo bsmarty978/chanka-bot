@@ -1,6 +1,6 @@
 {
     "API_USER": "username",
     "API_PASSWORD": "secret",
-    "HELP_MSG": "$help - to get help.\n$quote - to get random quote.\n$noods - to get random nood.\n$menu - to get menu.\n\n nchevi sensei is lub ",
+    "HELP_MSG": "$help - to get help.\n$quote - to get random quote.\n$namo n - to get n random namo meme.(max=10)\n$noods - to get random nood.\n$menu - to get menu.\n\n @__cheVi__ sensei is lub ",
     "PREFIX": "$"
 }
