@@ -1,2 +1,7 @@
 .vscode
-Mods/
+Mods/__pycache__
+media
+*.png
+*.jpg
+*.jpeg
+*.gif
