@@ -6,6 +6,7 @@
 
 from openwa import WhatsAPIDriver
 import json
+import time
 from Mods.ReplyMods import replymods as RM  #NOTE:all the mods are saved in this module you can ad new modules there
 
 
@@ -23,6 +24,7 @@ prefix = config_data.get("PREFIX")
 
 
 #NOTE:This inisitaes the driver from whatsapp web app and authenictes by scaning
+# driver = WhatsAPIDriver(client="chrome",executable_path="chromedriver.exe",headless=False,chrome_options=['--disable-gpu'])
 driver = WhatsAPIDriver(client="chrome",executable_path="chromedriver.exe",headless=False)
 
 
@@ -55,6 +57,16 @@ class NewMessageObserver:
                 elif message.content == f"{prefix}ping":
                     RM.replyPing(message)
 
+                elif message.content == f"{prefix}sticker":
+                    RM.replySticker(message, driver=driver)
+
+                elif message.content == f"{prefix}gif":
+                    RM.replyVideoToGif(message, driver=driver)
+
+                elif message.content.startswith(f"{prefix}say:"):
+                    text = message.content.split(":")[-1]
+                    RM.replySay(message,text,driver=driver)
+
                 else:
                     RM.replyModError(message)
             else:
@@ -65,7 +77,7 @@ driver.subscribe_new_messages(NewMessageObserver())
 
 #NOTE: loop is infinite coz of continues listning of messages
 while(True):
-    pass
+    time.sleep(60)
 
 
 

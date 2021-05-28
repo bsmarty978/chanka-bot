@@ -2,6 +2,12 @@ import json
 import random
 import requests
 import time
+import os
+
+from moviepy.editor import *
+
+from gtts import gTTS
+import gtts
 
 #NOTE: fetches quotes from locak quote fil
 #TO-DO: convert this method with API
@@ -125,5 +131,161 @@ class replymods:
     
 
         message.reply_message(ping_msg)
+    
+    def replySticker(message,driver):
+        '''Converts quoted media into webp and sends back as Sicther.'''
+        main_msg = message
+        try:
+            quoted_msg = (message.get_js_obj())['quotedMsg']
+            type = quoted_msg.get('type')
+            print(type)
+            if quoted_msg and type == 'image':
+                q_msg_id = quoted_msg['id']
+                print(q_msg_id)
+                q_msg = driver.get_message_by_id(q_msg_id)
+                print(f"q_msg:{q_msg}")
+                if q_msg:
+                    fname = q_msg.filename
+                    print(fname)
+                    q_msg.save_media("media/",force_download=True)
+                    driver.send_image_as_sticker(path=f"media/{fname}",chatid = main_msg.chat_id)
+                else:
+                    main_msg.reply_message("Lord is busy so fuck off, come later!!!!")
+            else:
+                main_msg.reply_message("dumbass")
+        except Exception as e:
+            print(f"ERROR:{e}")
+            main_msg.reply_message("Lord is busy so fuck off, come later.")
 
+    # def replyVideoToGif(message,driver):
+    #     '''Converts a video to a GIF and sends it back.'''
+    #     def VidToGif(filepath,trueform=False):
+    #         '''Converts a Video to GIF taking Video filepath return True Or False after Converting to GIF.''' 
+
+    #         '''To get max quality GIF pass trueform = True.'''
+
+    #         flag = 0
+    #         try:
+    #             clip = VideoFileClip(filepath)
+    #             length = clip.duration
+    #             fps = clip.fps
+    #             file_info = f"\n[FILE_INFO]:Length:{length} FPS:{fps} Total Frames:{length*fps}"
+    #             if length <=10:
+    #                 if trueform or fps<10:
+    #                     clip.write_gif("media/temp-gif/outGIF_true.gif")
+    #                     flag = 1
+    #                 else:
+    #                     clip.write_gif("media/temp-gif/outGIF.gif",fps=10)
+    #                     flag = 1
+                                
+    #                 if os.path.exists(filepath):
+    #                     os.remove(filepath)
+    #                 else:
+    #                     print("[ERROR] File does not exist at: " + filepath)
+
+    #                 print("File converted successfully")
+    #                 print(file_info)
+    #                 return(True)
+    #             else:
+    #                 print("Video lenght has exceeded limit of 5 min.")
+    #                 print(file_info)
+    #                 return(False)
+
+    #         except Exception as e:
+    #             print(f"[Error Occured]:{e}")
+    #             print(file_info)
+    #             if flag == 1:
+    #                 print("Still File Converted Succecfully..")
+    #                 return(True)
+    #             return(False)
+
+    #     try:
+    #         quoted_msg = (message.get_js_obj())['quotedMsg'] #gets quoted msg DICt through JS-OBJ
+    #         type = quoted_msg.get('type')                    #get type of message
+    #         print(type)
+    #         if quoted_msg and type == 'video':
+    #             q_msg_id = quoted_msg['id']
+    #             print(q_msg_id)
+    #             q_msg = driver.get_message_by_id(q_msg_id)  #gets actual quoted message 
+    #             print(f"q_msg:{q_msg}")
+    #             if q_msg:
+    #                 fname = q_msg.filename
+    #                 print(fname)
+    #                 q_msg.save_media("media/temp-gif/",force_download=True)
+    #                 fpath = f"media/temp-gif/{fname}"
+    #                 flag = VidToGif(fpath)
+    #                 if flag:
+    #                     driver.send_media(path="media/temp-gif/outGIF.gif",chatid = message.chat_id,caption = "gif by chevi")
+    #                 else:
+    #                     message.reply_message("Check limitaion suka blayat!!")
+    #             else:
+    #                 message.reply_message("Lord is busy so fuck off, come later!!!!")
+
+    #     except Exception as e:
+    #         print(f"[vidTOgid Error]:{e}")
+    #         message.reply_message("Lord is busy right now.")
+
+    def replyVideoToGif(message,driver):
+        '''Converts a video to a GIF and sends it back.'''
+        try:
+            quoted_msg = (message.get_js_obj())['quotedMsg'] #gets quoted msg DICt through JS-OBJ
+            type = quoted_msg.get('type')                    #get type of message
+            print(type)
+            if quoted_msg and type == 'video':
+                q_msg_id = quoted_msg['id']
+                print(q_msg_id)
+                q_msg = driver.get_message_by_id(q_msg_id)  #gets actual quoted message 
+                print(f"q_msg:{q_msg}")
+                if q_msg:
+                    fname = q_msg.filename
+                    print(fname)
+                    q_msg.save_media("media/temp-gif/",force_download=True)
+                    fpath = f"media/temp-gif/{fname}"
+                    if fname:
+                        driver.send_video_as_gif(path=fpath,chatid = message.chat_id,caption = "gif by chevi")
+                    else:
+                        message.reply_message("Check limitaion suka blayat!!")
+                else:
+                    message.reply_message("Lord is busy so fuck off, come later!!!!")
+
+        except Exception as e:
+            print(f"[vidTOgif Error]:{e}")
+            message.reply_message("Lord is busy right now.")
+
+    
+    def replySay(message,text,driver,lang = 'en'):
+        '''Sends VOice message according to thr given text.'''
+        try:
+            # The text that you want to convert to audio
+            mytext = text
+
+            # Language in which you want to convert
+            language = lang
+            if mytext:
+                # Passing the text and language to the engine,
+                # here we have marked slow=False. Which tells
+                # the module that the converted audio should
+                # have a high speed
+                myobj = gTTS(text=mytext, lang=language)
+
+                # Saving the converted audio in a mp3 file named
+                # media/temp-voice/outvoice.ogg
+                myobj.save("media/temp-voice/outvoice.mp3")
+                vmsg = driver.send_voice_note(path="media/temp-voice/outvoice.mp3",chatid = message.chat_id)
+                repmsg = driver.get_message_by_id(vmsg)
+                repmsg.reply_message(text)
+                # if vmsg:
+                #     os.remove("media/temp-voice/outvoice.mp3")
+                # else:
+                #     print("can not delet the file.")
+            else:
+                message.reply_message("Bhosdike kuch likh to sahi kya bolu..!!!\n\nUse this:\n*$say:I am noob*")
+        except Exception as e:
+            print(f"[Error while voice processing]:{e}")
+            message.reply_message("Iq is busy right now she will be back after soon.")
+
+        
+
+
+            
 

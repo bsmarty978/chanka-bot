@@ -1,6 +1,6 @@
 {
     "API_USER": "username",
     "API_PASSWORD": "secret",
-    "HELP_MSG": "$help - to get help.\n$quote - to get random quote.\n$namo n - to get n random namo meme.(max=10)\n$noods - to get random nood.\n$menu - to get menu.\n\n @__cheVi__ sensei is lub ",
+    "HELP_MSG": "$help - to get help.\n\n$quote - to get random quote.\n\n$namo n - to get n random namo meme.(max=10)\n\n$noods - to get random nood.\n\n$menu - to get menu.\n\n$say:[Text you wanna convter] - converts given text to speech.\n\n$gif - to get quoted video as gif.\n\n$sticker - to get quoted image as sticker.\n\n$ping - pings time and info about chanka.\n\n\n\n Chevi sensei is lub ",
     "PREFIX": "$"
 }
