@@ -1,0 +1,7 @@
+openwa==1.3.13
+playsound==1.2.2
+moviepy==1.0.3
+gTTS==2.2.2
+requests==2.24.0
+Pillow==8.2.0
+moviepy==1.0.3
