@@ -9,6 +9,9 @@ from moviepy.editor import *
 from gtts import gTTS
 import gtts
 
+import asyncio
+import aiohttp
+
 #NOTE: fetches quotes from locak quote fil
 #TO-DO: convert this method with API
 with open("quotes.json","r") as f:
@@ -261,28 +264,90 @@ class replymods:
 
             # Language in which you want to convert
             language = lang
-            if mytext:
-                # Passing the text and language to the engine,
-                # here we have marked slow=False. Which tells
-                # the module that the converted audio should
-                # have a high speed
-                myobj = gTTS(text=mytext, lang=language)
 
-                # Saving the converted audio in a mp3 file named
-                # media/temp-voice/outvoice.ogg
-                myobj.save("media/temp-voice/outvoice.mp3")
-                vmsg = driver.send_voice_note(path="media/temp-voice/outvoice.mp3",chatid = message.chat_id)
-                repmsg = driver.get_message_by_id(vmsg)
-                repmsg.reply_message(text)
-                # if vmsg:
-                #     os.remove("media/temp-voice/outvoice.mp3")
-                # else:
-                #     print("can not delet the file.")
+            print(f"TExt:{mytext}\nLAng:{language}")
+
+            if mytext:
+                if language in gtts.lang.tts_langs():
+                    # Passing the text and language to the engine,
+                    # here we have marked slow=False. Which tells
+                    # the module that the converted audio should
+                    # have a high speed
+                    myobj = gTTS(text=mytext, lang=language)
+
+                    # Saving the converted audio in a mp3 file named
+                    # media/temp-voice/outvoice.ogg
+                    myobj.save("media/temp-voice/outvoice.mp3")
+                    vmsg = driver.send_voice_note(path="media/temp-voice/outvoice.mp3",chatid = message.chat_id)
+                    repmsg = driver.get_message_by_id(vmsg)
+                    repmsg.reply_message(text)
+                    # if vmsg:
+                    #     os.remove("media/temp-voice/outvoice.mp3")
+                    # else:
+                    #     print("can not delete the file.")
+                else:
+                    message.reply_message("I can not speak that language.\n\nCheck the availabale languages by\n*$help say*")
             else:
-                message.reply_message("Bhosdike kuch likh to sahi kya bolu..!!!\n\nUse this:\n*$say:I am noob*")
+                message.reply_message("Bhosdike command use krna sikkh..!!!\n\nUse this:\n*$say:I am noob*")
         except Exception as e:
             print(f"[Error while voice processing]:{e}")
             message.reply_message("Iq is busy right now she will be back after soon.")
+
+    def replySr(message,driver,query="",count=1):
+        if int(count) > 10:
+            count = 10
+        async def get(url, session,media_count):
+            try:
+                async with session.get(url=url) as response:
+                    resp = await response.read()
+                    print("Successfully got url {} with resp of length {}.".format(url, len(resp)))
+                    f = open(f"media/temp-sr/srm{media_count}.jpg","wb")
+                    f.write(resp)
+                    f.close()
+            except Exception as e:
+                print(f"Unable to get url {url} due to {e}.")
+
+
+        async def runner(urls):
+            async with aiohttp.ClientSession() as session:
+                ret = await asyncio.gather(*[get(url, session,media_count) for media_count,url in enumerate(urls)])
+            # print("Finalized all. Return is a list of len {} outputs.".format(len(ret)))
+
+
+        url= 'https://meme-api.herokuapp.com/gimme'
+        if query=='':
+            pass_url = f"{url}/{count}"
+        else:
+            pass_url = f"{url}/{query}/{count}"
+
+        resp = requests.get(pass_url)
+        print(resp)
+        if resp.status_code == 200:
+            data = resp.json().get('memes')
+            url_list = []
+            for d in data:
+                url_list.append(d['preview'][-1])
+            
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+            outter = asyncio.run(runner(url_list))
+
+            counter = 0
+            for d in data:
+                post = d['postLink']
+                sr = d['subreddit']
+                title = d['title']
+                orl = d['url']
+                u = d['author']
+                prl = d['preview'][-1]
+                media_resp = f"media/temp-sr/srm{counter}.jpg"
+                cap= f"Title:{title}\nLink⛓: {post}\n r/{sr}\nu/{u} "
+                driver.send_media(path=media_resp,chatid = message.chat_id, caption = cap)
+                counter += 1
+
+        else:
+            message.reply_message("subreddit not found.")
+
+     
 
         
 

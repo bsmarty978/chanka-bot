@@ -21,12 +21,13 @@ with open("UserConfig.json","r") as f:
 config_data = json.loads(d)
 help_msg = config_data.get("HELP_MSG")
 prefix = config_data.get("PREFIX")
-
+owner = config_data.get("OWNER")
+groups = config_data.get("GROUPS")
+flag = 0
 
 #NOTE:This inisitaes the driver from whatsapp web app and authenictes by scaning
 # driver = WhatsAPIDriver(client="chrome",executable_path="chromedriver.exe",headless=False,chrome_options=['--disable-gpu'])
 driver = WhatsAPIDriver(client="chrome",executable_path="chromedriver.exe",headless=False)
-
 
 #NOTE:this class is used for receving and handling message
 class NewMessageObserver:
@@ -63,22 +64,85 @@ class NewMessageObserver:
                 elif message.content == f"{prefix}gif":
                     RM.replyVideoToGif(message, driver=driver)
 
-                elif message.content.startswith(f"{prefix}say:"):
-                    text = message.content.split(":")[-1]
-                    RM.replySay(message,text,driver=driver)
+                elif message.content.startswith(f"{prefix}memes"):
+                    content_list = message.content.split(" ")
+                    if len(content_list) == 2:
+                        RM.replySr(message, driver=driver, count=int(content_list[-1]))
+                    else:
+                        RM.replySr(message, driver=driver)
 
+                elif message.content.startswith(f"{prefix}sr"):
+                    content_list = message.content.split(" ")
+                    if len(content_list) == 2:
+                        RM.replySr(message, driver=driver,query=content_list[-1])
+                    elif len(content_list) == 3:
+                        RM.replySr(message, driver=driver,query=content_list[-2],count=int(content_list[-1]))
+                    else:
+                        message.reply_message("First lean how to use this command, Biyath.")
+
+                elif message.content.startswith(f"{prefix}say:"):
+                    content_list = message.content.split(':')
+                    if len(content_list) == 2:
+                        text = content_list[-1]
+                        RM.replySay(message,text,driver=driver)
+                    elif len(content_list) == 3:
+                        text = content_list[-2]
+                        lang = content_list[-1]
+                        RM.replySay(message,text,driver=driver,lang=lang)
+                    else:
+                        text=""
+                        RM.replySay(message,text,driver=driver)
                 else:
                     RM.replyModError(message)
             else:
                 pass
 
+print("Waiting for QR")
+
 #NOTE:this is used to subscribe message handling class to the driver
 driver.subscribe_new_messages(NewMessageObserver())
+
+
+# while True:
+#     if driver.wait_for_login():
+#         #starting bot
+#         print("*Lord is Back* 👑 ⚒ 🙋 🎁 ")
+#         driver.chat_send_message(owner,"*Lord is Back* 👑 ⚒ 🙋 🎁 ")
+#         groups = driver.get_all_groups()
+#         # for group in groups:
+#         #     group.send_message("*Lord is Back* 👑 ⚒ 🙋 🎁 ")       
+#         break
+#     else:
+#         pass
+
+# while not driver.wait_for_login():
+#     pass
+
+
+#starting bot
+# print("*Lord is Back* 👑 ⚒ 🙋 🎁 ")
+# driver.chat_send_message(owner,"*Lord is Back* 👑 ⚒ 🙋 🎁 ")
+# groups = driver.get_all_groups()
+# for group in groups:
+#     group.send_message("*Lord is Back* 👑 ⚒ 🙋 🎁 ")
+
+
+# def replyMission(message):
+#     if message.sender.id == owner:
+#         #bot stopped
+#         print("*Lord is going on mission* 👨‍🚒 💂 🔫 ⚠ \n*he will be back*\n\n*WISH HIM LUCK 👍*")
+#         driver.chat_send_message(owner,"*Lord is going on mission* 👨‍🚒 💂 🔫 ⚠ \n*he will be back*\n\n*WISH HIM LUCK 👍*")
+
+#         # groups = driver.get_all_groups()
+#         # for group in groups:
+#         #     group.send_message("*Lord is going on mission* 👨‍🚒 💂 🔫 ⚠ \n*he will be back*\n\n*WISH HIM LUCK 👍*")
+#         return 1
+#     else:
+#         message.reply_message("*You are not my boss.*\n\n _Only chevi sensei can send to me to the mission._")
+#         return 0
 
 #NOTE: loop is infinite coz of continues listning of messages
 while(True):
     time.sleep(60)
-
-
 
 

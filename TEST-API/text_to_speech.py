@@ -23,12 +23,12 @@ myobj = gTTS(text=mytext, lang=language)
 
 # Saving the converted audio in a mp3 file named
 # welcome
-rop = myobj.save("welcome.mp3")
-print(f"roppop:{rop}")
+# rop = myobj.save("welcome.mp3")
+# print(f"roppop:{rop}")
 
-# Playing the converted file
-# os.system("mpg321 welcome.mp3")
-playsound("welcome.mp3")
+# # Playing the converted file
+# # os.system("mpg321 welcome.mp3")
+# playsound("welcome.mp3")
 
 # all available languages along with their IETF tag
 # print(gtts.lang.tts_langs())
@@ -55,3 +55,5 @@ playsound("welcome.mp3")
 # text = "is it working?"
 # engine.save_to_file(text, "python.ogg")
 # engine.runAndWait()
+langs = gtts.lang.tts_langs()
+print('hi' in langs)
