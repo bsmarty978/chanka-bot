@@ -10,11 +10,6 @@ import time
 from Mods.ReplyMods import replymods as RM  #NOTE:all the mods are saved in this module you can ad new modules there
 
 
-#
-# with open("quotes.json","r") as f:
-#     d = f.read()
-# data = json.loads(d)
-
 #NOTE: this is used get UserConfig data from UserConfig.json 
 with open("UserConfig.json","r") as f:
     d = f.read()
@@ -92,6 +87,16 @@ class NewMessageObserver:
                     else:
                         text=""
                         RM.replySay(message,text,driver=driver)
+                        
+                elif message.content.startswith(f"{prefix}r6p"):
+                    content_list = message.content.split(" ")
+                    text = content_list[-1]
+                    RM.replyRsixP(message,text,driver=driver)
+
+                elif message.content.startswith(f"{prefix}r6t"):
+                    content_list = message.content.split(" ")
+                    text = content_list[-1]
+                    RM.replyRsixT(message,text,driver=driver)
                 else:
                     RM.replyModError(message)
             else:
@@ -101,6 +106,10 @@ print("Waiting for QR")
 
 #NOTE:this is used to subscribe message handling class to the driver
 driver.subscribe_new_messages(NewMessageObserver())
+
+#NOTE: loop is infinite coz of continues listning of messages
+while(True):
+    time.sleep(60)
 
 
 # while True:
@@ -141,8 +150,6 @@ driver.subscribe_new_messages(NewMessageObserver())
 #         message.reply_message("*You are not my boss.*\n\n _Only chevi sensei can send to me to the mission._")
 #         return 0
 
-#NOTE: loop is infinite coz of continues listning of messages
-while(True):
-    time.sleep(60)
+
 
 

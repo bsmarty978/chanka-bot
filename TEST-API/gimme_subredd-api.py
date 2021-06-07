@@ -23,7 +23,7 @@ async def runner(urls):
 
 
 url= 'https://meme-api.herokuapp.com/gimme'
-query = 'boobs'
+query = 'hentai'
 count = 5
 if query=='':
     pass_url = f"{url}/{count}"

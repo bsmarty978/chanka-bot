@@ -1,5 +1,6 @@
 import json
 import random
+import re
 import requests
 import time
 import os
@@ -11,6 +12,11 @@ import gtts
 
 import asyncio
 import aiohttp
+
+import pymongo
+import pandas as pd
+import itertools
+import dateparser as dp
 
 #NOTE: fetches quotes from locak quote fil
 #TO-DO: convert this method with API
@@ -347,10 +353,114 @@ class replymods:
         else:
             message.reply_message("subreddit not found.")
 
-     
+    def replyRsixP(message,text,driver):
+        client = pymongo.MongoClient("mongodb+srv://nameless_gambit:smtG886611@cluster0.zjdqc.mongodb.net/R6SDB?retryWrites=true&w=majority")
+        db = client.dbr6s
+        players = db.Players
+        res = players.find({ '$text' : {'$search' : f'^.*{text}.*$'}})
+        print(res.count())
+        if res.count() == 1:
+            result = res[0]
+            ign  = result['ign']
+            name = result['name']
+            photo = result['photo']
+            country = result['country']
+            team = result['timeline'][-1]['teamname']
+            statsdf = pd.DataFrame(res[0]['allstats'])
+            statsdf.set_index('match_id',inplace=True)
 
-        
+            #TOTAL PARAMS:
+            total_matches = result['total matches']
+            total_kill = statsdf.kill.sum()
+            total_death = statsdf.death.sum()
+            total_e_kill = statsdf.entry_kill.sum()
+            total_e_death = statsdf.entry_death.sum()
+            total_cluth = statsdf['1vx'].sum()
+            total_plant = statsdf.plant.sum()
 
+            #AVERAGE PARAMS:
+            avgs = statsdf.mean().round(2)
 
+            #MAX PARAMS:
+            maxs = statsdf.max()
+
+            #BEST AND WROST PARAMS:
+            best_r = statsdf.rating.max()
+            worst_r = statsdf.rating.min()
+            best = list(statsdf[statsdf.rating == statsdf.rating.max()].index)
+            wrost = list(statsdf[statsdf.rating == statsdf.rating.min()].index)
+
+            timeline = ""
+            for t in result['timeline']:
+                timeline = timeline+f"{t['teamname']} on {t['jointime'].strftime('%b %d %Y')}\n"
+
+            cap_s = f"Ign:{ign}\nName:{name}\nCountry:{country}\nTeam:{team}\n\n"
+            cap_total = f"Total Matches:{total_matches}\nTotal Kills:{total_kill}\nTotal Deaths:{total_death}\nTotal Entry Kills:{total_e_kill}\nTotal Entry Deaths:{total_e_death}\nTotal Clutches:{total_cluth}\nTotal Plant:{total_plant}\n\n"
+            cap_avg = f"Average Stat:\n{avgs}\n\n"
+            cap_max = f"Max stst:\n{maxs}\n\n"
+            cap_bw = f"Best matches(Rating:{best_r}):{best}\nWrost Matches(Rating:{worst_r}):{wrost}\n\n"
+            cap_time = f"Player Timeline:\n{timeline}"
+
+            cap = cap_s+cap_total+cap_avg+cap_max+cap_bw+cap_time
+
+            resp = requests.get(photo)
+            if resp.status_code == 200:
+                f  = open("media/temp-r6p/sample.jpg","wb")
+                f.write(resp.content)
+                f.close()
+                driver.send_media(path="media/temp-r6p/sample.jpg",chatid = message.chat_id, caption = cap)
+            else:
+                driver.send_media(path="media/temp-r6p/defualt.jpg",chatid = message.chat_id, caption = cap)
+        else:
+            message.reply_message("Sorry! we can't find this player, check if PlayerName is correct.")   
+
+    def replyRsixT(message,text,driver):
+        client = pymongo.MongoClient("mongodb+srv://nameless_gambit:smtG886611@cluster0.zjdqc.mongodb.net/R6SDB?retryWrites=true&w=majority")
+        db = client.dbr6s
+        teams = db.Teams
+        res = teams.find({ '$text' : {'$search' : f'^.*{text}.*$'}})
+        print(res.count())
+        if res.count()==1:
+            result = res[0]
+            name = result['name']
+            country = result['country']
+            flag = result['flag']
+            total_matches = result['total matches']
+            roster = result['roster']
+
+            tdf = pd.DataFrame(result['allmatches'])
+
+            win = int(tdf[tdf.result == "WON"].count().match_id)
+            loss = int(tdf[tdf.result == "LOSS"].count().match_id)
+            tie = int(tdf[tdf.result == "TIE"].count().match_id)
+
+            explo = tdf.explode('roster').drop_duplicates(subset='roster')
+            timeline = []
+            for p,t in zip(list(explo.roster),list(explo.time)):
+                timeline.append({
+                    'time': t,
+                    'player':p
+                })
+
+            rt=pd.DataFrame(timeline).groupby('time')['player'].apply(list)
+
+            tline = ""
+            for t,p in zip(rt.index,rt):
+                tline = tline + f"{p} joined on {dp.parse(t).date()}\n"
             
+            cap_s = f"Team Name:{name}\nCountry\Regoin:{country}\n\nCurrent Roster:{roster}\n\n"
+            cap_st = f"Total Matches:{total_matches}\n\nWin/Loss(%):{win}/{loss}({round(win/loss,2)})\nTie:{tie}\n\n"
+            cap_t = f"Roster Timeline:\n{tline}"
 
+            cap = cap_s+cap_st+cap_t
+
+            resp = requests.get(flag)
+            if resp.status_code == 200:
+                f  = open("media/temp-r6t/sample.jpg","wb")
+                f.write(resp.content)
+                f.close()
+                driver.send_media(path="media/temp-r6t/sample.jpg",chatid = message.chat_id, caption = cap)
+            else:
+                driver.send_media(path="media/temp-r6t/defualt.jpg",chatid = message.chat_id, caption = cap)
+        else:
+            message.reply_message("Sorry! we can't find this Team, check if TeamName is correct.")
