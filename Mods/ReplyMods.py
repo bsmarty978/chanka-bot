@@ -166,73 +166,73 @@ class replymods:
             print(f"ERROR:{e}")
             main_msg.reply_message("Lord is busy so fuck off, come later.")
 
-    # def replyVideoToGif(message,driver):
-    #     '''Converts a video to a GIF and sends it back.'''
-    #     def VidToGif(filepath,trueform=False):
-    #         '''Converts a Video to GIF taking Video filepath return True Or False after Converting to GIF.''' 
+    def replyVideoToGifnew(message,driver):
+        '''Converts a video to a GIF and sends it back.'''
+        def VidToGif(filepath,trueform=False):
+            '''Converts a Video to GIF taking Video filepath return True Or False after Converting to GIF.''' 
 
-    #         '''To get max quality GIF pass trueform = True.'''
+            '''To get max quality GIF pass trueform = True.'''
 
-    #         flag = 0
-    #         try:
-    #             clip = VideoFileClip(filepath)
-    #             length = clip.duration
-    #             fps = clip.fps
-    #             file_info = f"\n[FILE_INFO]:Length:{length} FPS:{fps} Total Frames:{length*fps}"
-    #             if length <=10:
-    #                 if trueform or fps<10:
-    #                     clip.write_gif("media/temp-gif/outGIF_true.gif")
-    #                     flag = 1
-    #                 else:
-    #                     clip.write_gif("media/temp-gif/outGIF.gif",fps=10)
-    #                     flag = 1
+            flag = 0
+            try:
+                clip = VideoFileClip(filepath)
+                length = clip.duration
+                fps = clip.fps
+                file_info = f"\n[FILE_INFO]:Length:{length} FPS:{fps} Total Frames:{length*fps}"
+                if length <=10:
+                    if trueform or fps<10:
+                        clip.write_gif("media/temp-gif/outGIF_true.gif")
+                        flag = 1
+                    else:
+                        clip.write_gif("media/temp-gif/outGIF.gif",fps=10)
+                        flag = 1
                                 
-    #                 if os.path.exists(filepath):
-    #                     os.remove(filepath)
-    #                 else:
-    #                     print("[ERROR] File does not exist at: " + filepath)
+                    if os.path.exists(filepath):
+                        os.remove(filepath)
+                    else:
+                        print("[ERROR] File does not exist at: " + filepath)
 
-    #                 print("File converted successfully")
-    #                 print(file_info)
-    #                 return(True)
-    #             else:
-    #                 print("Video lenght has exceeded limit of 5 min.")
-    #                 print(file_info)
-    #                 return(False)
+                    print("File converted successfully")
+                    print(file_info)
+                    return(True)
+                else:
+                    print("Video lenght has exceeded limit of 5 min.")
+                    print(file_info)
+                    return(False)
 
-    #         except Exception as e:
-    #             print(f"[Error Occured]:{e}")
-    #             print(file_info)
-    #             if flag == 1:
-    #                 print("Still File Converted Succecfully..")
-    #                 return(True)
-    #             return(False)
+            except Exception as e:
+                print(f"[Error Occured]:{e}")
+                print(file_info)
+                if flag == 1:
+                    print("Still File Converted Succecfully..")
+                    return(True)
+                return(False)
 
-    #     try:
-    #         quoted_msg = (message.get_js_obj())['quotedMsg'] #gets quoted msg DICt through JS-OBJ
-    #         type = quoted_msg.get('type')                    #get type of message
-    #         print(type)
-    #         if quoted_msg and type == 'video':
-    #             q_msg_id = quoted_msg['id']
-    #             print(q_msg_id)
-    #             q_msg = driver.get_message_by_id(q_msg_id)  #gets actual quoted message 
-    #             print(f"q_msg:{q_msg}")
-    #             if q_msg:
-    #                 fname = q_msg.filename
-    #                 print(fname)
-    #                 q_msg.save_media("media/temp-gif/",force_download=True)
-    #                 fpath = f"media/temp-gif/{fname}"
-    #                 flag = VidToGif(fpath)
-    #                 if flag:
-    #                     driver.send_media(path="media/temp-gif/outGIF.gif",chatid = message.chat_id,caption = "gif by chevi")
-    #                 else:
-    #                     message.reply_message("Check limitaion suka blayat!!")
-    #             else:
-    #                 message.reply_message("Lord is busy so fuck off, come later!!!!")
+        try:
+            quoted_msg = (message.get_js_obj())['quotedMsg'] #gets quoted msg DICt through JS-OBJ
+            type = quoted_msg.get('type')                    #get type of message
+            print(type)
+            if quoted_msg and type == 'video':
+                q_msg_id = quoted_msg['id']
+                print(q_msg_id)
+                q_msg = driver.get_message_by_id(q_msg_id)  #gets actual quoted message 
+                print(f"q_msg:{q_msg}")
+                if q_msg:
+                    fname = q_msg.filename
+                    print(fname)
+                    q_msg.save_media("media/temp-gif/",force_download=True)
+                    fpath = f"media/temp-gif/{fname}"
+                    flag = VidToGif(fpath)
+                    if flag:
+                        driver.send_media(path="media/temp-gif/outGIF.gif",chatid = message.chat_id,caption = "gif by chevi")
+                    else:
+                        message.reply_message("Check limitaion suka blayat!!")
+                else:
+                    message.reply_message("Lord is busy so fuck off, come later!!!!")
 
-    #     except Exception as e:
-    #         print(f"[vidTOgid Error]:{e}")
-    #         message.reply_message("Lord is busy right now.")
+        except Exception as e:
+            print(f"[vidTOgid Error]:{e}")
+            message.reply_message("Lord is busy right now.")
 
     def replyVideoToGif(message,driver):
         '''Converts a video to a GIF and sends it back.'''
@@ -461,6 +461,73 @@ class replymods:
                 f.close()
                 driver.send_media(path="media/temp-r6t/sample.jpg",chatid = message.chat_id, caption = cap)
             else:
-                driver.send_media(path="media/temp-r6t/defualt.jpg",chatid = message.chat_id, caption = cap)
+                driver.send_media(path="media/temp-r6t/def.jpg",chatid = message.chat_id, caption = cap)
         else:
             message.reply_message("Sorry! we can't find this Team, check if TeamName is correct.")
+
+    def replyRsixS(message,p,driver,pl='pc'):
+        def objstr(data):
+            rep = ""
+            for i in data:
+                if data[i]:
+                    rep = rep + f"    *{i}* : ```{data[i]}``` \n"
+                else:
+                    rep = rep + f"    *{i}* : ```-``` \n"
+            return rep
+        try:
+            path = '../../media/temp-r6s/sample.json'
+            os.system(f'cd scraper/r6stats && scrapy crawl r6st -a p={p} -a pl={pl} --nolog -o {path}')
+            print(">>>>>>>>>>boom")
+            f = open('media/temp-r6s/sample.json',encoding='utf-8')
+            data = json.loads(f.read())[0]
+            f = open('media/temp-r6s/sample.json',"w")
+            f.close()
+            print(f">>>>>>>>>>{data.get('ign')}")
+            if data.get('ign'):
+                photo = data['photo']
+                resp = requests.get(photo)
+                cap = json.dumps(data)
+
+                #caps to pass:
+                ign = data['ign']
+                # alias = json.dumps(data['alias'],ensure_ascii=False,indent=1)
+                alias = ""
+                for i in data['alias']:
+                    alias = alias + i +"\n"
+
+                tm    = data['total_matches'].split('Matches')[0]
+
+                sname = data['seasonal']['name']
+                stm   = data['seasonal']['total matches'].split('Matches')[0]
+                # sover = json.dumps(data['seasonal']['overview'], ensure_ascii=False,indent=1)
+                sover = objstr(data['seasonal']['overview'])
+                # srank = json.dumps(data['seasonal']['ranked'], ensure_ascii=False,indent=1)
+                if data.get('seasonal').get('ranked'):
+                    srank = objstr(data['seasonal']['ranked'])
+                else:
+                    srank = "```no rank data availabel```\n"
+                # scas  = json.dumps(data['seasonal']['casual'], ensure_ascii=False,indent=1)
+                scas  = objstr(data['seasonal']['casual'])
+
+                aover = objstr(data['alltime']['overview'])
+                agen  = objstr(data['alltime']['genral'])
+                arank = objstr(data['alltime']['ranked'])
+                aunrank = objstr(data['alltime']['unranked'])
+                acas  = objstr(data['alltime']['casual'])
+
+                cap_s = f"*Ign:* 🕹 ```{ign}``` \n*Alias:* 🤡\n {alias} *Total Matches:*  ```{tm}```\n\n"
+                cap_se = f"*[SEASON]:* ```{sname}``` \n *Matches:* ```{stm}``` \n\n*Overview:* \n{sover}\n\n*Ranked:* \n{srank}\n\n*Casual:* \n{scas}\n\n"
+                cap_a  = f"*[ALLTIME]*\n*Overview:*\n{aover}\n\n*Genral:*\n{agen}\n\n*Ranked:*\n{arank}\n\n*Unranked:*\n{aunrank}\n\n*Casual:*\n{acas}\n\n"
+                cap = cap_s+cap_a+cap_se
+
+                if resp.status_code in [200,302]:
+                    f  = open("media/temp-r6s/sample-dp.png","wb")
+                    f.write(resp.content)
+                    f.close()
+                    driver.send_media(path="media/temp-r6s/sample-dp.png",chatid = message.chat_id, caption = cap)
+                else:
+                    driver.send_media(path="media/temp-r6s/def.jpg",chatid = message.chat_id, caption = cap)
+            else:
+                message.reply_message("Sorry! we can't find the player check playername and platform'")
+        except Exception as e:
+            print(f"[ERROR:::]{e}")

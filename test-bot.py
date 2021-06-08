@@ -97,6 +97,18 @@ class NewMessageObserver:
                     content_list = message.content.split(" ")
                     text = content_list[-1]
                     RM.replyRsixT(message,text,driver=driver)
+
+                elif message.content.startswith(f"{prefix}r6s"):
+                    content_list = message.content.split(" ")
+                    if len(content_list) == 2:
+                        p = content_list[-1]
+                        RM.replyRsixS(message,p,driver=driver)
+                    elif content_list == 3:
+                        p = content_list[2]
+                        pl = content_list[1]
+                        RM.replyRsixS(message,p,pl,driver=driver)
+                    else:
+                        message.reply_message("Command use krna sikh bhosad.")
                 else:
                     RM.replyModError(message)
             else:
