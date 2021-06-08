@@ -115,7 +115,11 @@ class NewMessageObserver:
                 pass
 
 print("Waiting for QR")
-
+while not driver.wait_for_login():
+    time.sleep(3)
+print("Saving session")
+# driver.save_firefox_profile(remove_old=False)
+print("Bot started")
 #NOTE:this is used to subscribe message handling class to the driver
 driver.subscribe_new_messages(NewMessageObserver())
 

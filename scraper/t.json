@@ -1,0 +1,117 @@
+[{
+    "ign": "Ashy_MC",
+    "alias": [
+        "vipul__LMG"
+    ],
+    "photo": "https://ubisoft-avatars.akamaized.net/11237319-49a4-46ba-b71e-08b94a50f01c/default_256_256.png",
+    "total_matches": "500 Matches",
+    "alltime": {
+        "overview": {
+            "Level": "78",
+            "Best MMR Rating": "2,519",
+            "Rank": "COPPER I",
+            "Avg Seasonal MMR": "2,519",
+            "Top Operators": [
+                "SLEDGE",
+                "FUZE",
+                "KAPKAN"
+            ],
+            "Wins": "200",
+            "Win %": "40%",
+            "Kills": "948",
+            "KD": "0.52"
+        },
+        "genral": {
+            "Headshot %": "33.12%",
+            "KD": "0.52",
+            "Deaths": "1,809",
+            "Headshots": "314",
+            "Wins": "200",
+            "Losses": "299",
+            "Win %": "40%",
+            "Time Played": "134h",
+            "Matches Played": "500",
+            "Total XP": "3,662,754",
+            "Melee Kills": "9",
+            "Blind Kills": "2"
+        },
+        "ranked": {
+            "Time Played": "10h 34m 19s",
+            "Wins": "9",
+            "Losses": "21",
+            "Matches": "30",
+            "Deaths": "138",
+            "Kills": "46",
+            "Win %": "30%",
+            "KD": "0.33",
+            "Kills/match": "1.53",
+            "Kills/min": "0.08"
+        },
+        "unranked": {
+            "Time Played": "41h 59m 12s",
+            "Wins": "52",
+            "Losses": "75",
+            "Matches": "127",
+            "Deaths": "552",
+            "Kills": "303",
+            "Win %": "40.9%",
+            "KD": "0.55",
+            "Kills/match": "2.39",
+            "Kills/min": "0.12"
+        },
+        "casual": {
+            "Time Played": "83h 58m 47s",
+            "Wins": "139",
+            "Losses": "203",
+            "Matches": "342",
+            "Deaths": "1,119",
+            "Kills": "599",
+            "Win %": "40.6%",
+            "KD": "0.54",
+            "Kills/match": "1.75",
+            "Kills/min": "0.12"
+        }
+    },
+    "seasonal": {
+        "name": "Crimson Heist",
+        "total matches": "198 Matches",
+        "overview": {
+            "Best MMR": "2281",
+            "Started Collecting": "4/21/2021",
+            "Time Played": "2d 16h 17m 39s",
+            "Wins": "97",
+            "Win %": "42.2%",
+            "Kills": "478",
+            "K/D": "0.56"
+        },
+        "ranked": {
+            "K/D": "0.34",
+            "Kills/Match": "1.53",
+            "Kills": "46",
+            "Deaths": "136",
+            "Win %": "30.00",
+            "Wins": "9",
+            "Losses": "21",
+            "Abandons": "0",
+            "Rank": "COPPER I",
+            "Max Rank": "SILVER I",
+            "MMR": "1,584",
+            "Max MMR": "2,519"
+        },
+        "casual": {
+            "K/D": "0.68",
+            "Kills/Match": "2.05",
+            "Kills": "345",
+            "Deaths": "507",
+            "Win %": "38.69",
+            "Wins": "65",
+            "Losses": "74",
+            "Abandons": "29",
+            "Rank": "COPPER V",
+            "Max Rank": "-",
+            "MMR": "1,210",
+            "Max MMR": "0"
+        }
+    },
+    "url": "https://r6.tracker.network/profile/pc/Ashy_MC"
+}]
