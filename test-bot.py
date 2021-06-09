@@ -9,6 +9,8 @@ import json
 import time
 from Mods.ReplyMods import replymods as RM  #NOTE:all the mods are saved in this module you can ad new modules there
 
+from PIL import Image
+import qrcode
 
 #NOTE: this is used get UserConfig data from UserConfig.json 
 with open("UserConfig.json","r") as f:
@@ -22,7 +24,15 @@ flag = 0
 
 #NOTE:This inisitaes the driver from whatsapp web app and authenictes by scaning
 # driver = WhatsAPIDriver(client="chrome",executable_path="chromedriver.exe",headless=False,chrome_options=['--disable-gpu'])
-driver = WhatsAPIDriver(client="chrome",executable_path="chromedriver.exe",headless=False)
+driver = WhatsAPIDriver(client="chrome",executable_path="chromedriver.exe",headless=True)
+
+
+def qrprinter(barcode_url):
+    qr = qrcode.QRCode()
+    qr.add_data(barcode_url)
+    #invert=True Black block on white, some apps don't recognize black and white blocks.
+    qr.print_ascii(invert=True)
+
 
 #NOTE:this class is used for receving and handling message
 class NewMessageObserver:
@@ -115,6 +125,7 @@ class NewMessageObserver:
                 pass
 
 print("Waiting for QR")
+qrprinter(driver.get_qr_plain())
 while not driver.wait_for_login():
     time.sleep(3)
 print("Saving session")
